@@ -1,0 +1,20 @@
+version: "2"
+services:
+  nginx:
+# 从本地Dockerfile进行build
+#    build:
+#      context: ./build/nginx
+# 此处为自定义nginx配置（文件名必须为*.conf）
+#    volumes:
+#      - ./local/my.conf:/etc/nginx/conf.d/my.conf:ro
+  php:
+#    image: registry.cn-hangzhou.aliyuncs.com/php/php:7
+# 从本地Dockerfile进行build
+#    build:
+#      context: ./build/php
+# 此处为自定义php配置（文件名必须为*.ini），用于开启未加载的扩展等
+#    volumes:
+#      - ./local/my.ini:/usr/local/etc/php/conf.d/my.ini:ro
+# 此处为自定义service配置，用于使用本地webservice
+#    extra_hosts:
+#      - "example.services.dev.ofc:192.168.99.100"

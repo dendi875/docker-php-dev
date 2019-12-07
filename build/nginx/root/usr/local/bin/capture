@@ -1,0 +1,6 @@
+#!/bin/sh
+LOGDIR="/data1/www/pcap/`date +%Y%m%d`"
+if [ ! -d "$LOGDIR" ]; then
+	mkdir -p "$LOGDIR"
+fi
+tcpdump tcp port 80 or tcp port 443 -s 0 -w "$LOGDIR/`date +%H%M%S`.cap"

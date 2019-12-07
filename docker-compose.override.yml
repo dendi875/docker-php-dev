@@ -1,0 +1,21 @@
+version: '2'
+services:
+  nginx:
+# 从本地Dockerfile进行build
+    build: ./build/nginx
+# 此处为自定义nginx配置
+    volumes:
+      - ./local/app_domain_root.conf:/etc/nginx/include/app_domain_root.conf
+      - ./build/nginx/root/etc/nginx/conf.d/sites.conf:/etc/nginx/conf.d/sites.conf
+  php:
+# 从本地Dockerfile进行build
+    build: ./build/php
+# 此处为自定义php配置（文件名必须为*.ini），用于开启未加载的扩展等
+    volumes:
+      - ./my.ini/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+      - ./my.ini/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini:ro
+    environment:
+      - SKIP_NFS=1
+# 此处为自定义service配置，用于使用本地webservice
+    extra_hosts:
+      - "example.services.dev.ofc:192.168.99.100"

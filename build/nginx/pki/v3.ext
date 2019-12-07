@@ -1,0 +1,5 @@
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = www.test.dev
+DNS.2 = *.zhangquan.dev

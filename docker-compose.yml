@@ -1,0 +1,20 @@
+# Compose file reference: https://docs.docker.com/compose/compose-file/
+version: "2"
+services:
+  nginx:
+    image: dendi875/php-nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - php
+    volumes_from:
+      - php:rw
+  php:
+    image: dendi875/php-php:7.3
+    volumes:
+      - ./www:/data1/www
+    extra_hosts:
+      - "nfshost:192.168.100.73"
+      - "redis.servers.dev.ofc:192.168.100.74"
+    privileged: true
