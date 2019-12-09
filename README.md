@@ -26,7 +26,7 @@
 * win7
     * 检查虚拟化技术支持
         * [检查方法](https://www.shaileshjha.com/how-to-find-out-if-intel-vt-x-or-amd-v-virtualization-technology-is-supported-in-windows-10-windows-8-windows-vista-or-windows-7-machine/)
-        * 如果电脑尚未开启虚拟化功能，请对照自己电脑品牌搜索关键字 `开启虚拟化`
+        * 如果电脑尚未开启虚拟化功能，请对照自己电脑品牌`google`搜索关键字 `开启虚拟化`
     * 下载并安装`Docker Toolbox`
         * 下载
             * [官方](https://www.docker.com/products/docker-toolbox)
@@ -59,7 +59,7 @@
     * 开启`hype-v`虚拟机
         * `控制面板 > 程序 > 启用或关闭windows功能 > 选中hype-v选项`
     * 下载并安装`Docker for windows`
-        * [官方](https://www.docker.com/products/docker-desk)
+        * [官方安装说明](https://www.docker.com/products/docker-desk)
     * 安装完成后，重新启动电脑，桌面右下角会出现`docker`标识符，并提示正在启动。在`CMD`命令行窗口运行`docker --version`，显示docker版本信息，表示docker已经安装成功。
 
 * mac
@@ -95,7 +95,6 @@ git clone git@github.com:dendi875/docker-php-dev.git
 但是Chrome 浏览器从 v63 版本起将会强制所有的```.dev```域名使用`HTTPS`。为了解决上述两种需求我们可以使用自己制作的`CA`根证书并颁发需要的`SSL`证书。这也就是 **build/nginx/pki/** 目录的功能：
 
 ```sh
-[root@localhost nginx]# tree -L 1 pki
 pki
 ├── CA
 ├── mk-crt.sh
@@ -195,7 +194,25 @@ Creating dockerphpdev_nginx_1
 
 **注意：** 如果修改了`docker-compose`配置文件的内容必须重新启动`docker`才能生效
 
-六、更新`docker`镜像
+六、重新启动`docker`
+
+```sh
+$ docker-compose down
+Stopping dockerphpdev_nginx_1 ...
+Stopping dockerphpdev_php_1 ...
+[1BRemoving dockerphpdev_nginx_1 ...
+Removing dockerphpdev_php_1 ...
+[1BRemoving network dockerphpdev_default
+```
+
+```sh
+$ docker-compose up -d
+Creating network "dockerphpdev_default" with the default driver
+Creating dockerphpdev_php_1
+Creating dockerphpdev_nginx_1
+```
+
+七、更新`docker`镜像
 
 ```sh
 $ cd /path/to/workdir/
@@ -214,6 +231,20 @@ $ docker-compose pull
 ```
 
 ## Docker FAQ
+
+**Q：** 启动`docker`时出现如下错误怎么办？
+
+```sh
+$ docker-compose up -d
+[31mERROR[0m: SSL error: [SSL: TLSV1_ALERT_PROTOCOL_VERSION] tlsv1 alert proto
+col version (_ssl.c:590)
+```
+
+**A：** 这是因为与Docker守护进程进行TLS通信的版本默认为TLSv1。 我们需要带VCH的TLSv1_2。 可以使用以下命令设置环境变量：
+
+```sh
+export COMPOSE_TLS_VERSION=TLSv1_2
+```
 
 **Q：** 某些域名（如：unknow.zhangquan.dev）无法访问开发环境怎么办？
 
