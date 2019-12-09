@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Bash PHP Linter for Pre-commits
+#
+# Exit 0 if no errors found
+# Exit 1 if errors were found
+#
+# Requires
+# - php
+
+# Echo Colors
+msg_color_magenta='\e[1;35m'
+msg_color_yellow='\e[0;33m'
+msg_color_none='\e[0m' # No Color
+
+# Loop through the list of paths to run php lint against
+echo -en "${msg_color_yellow}Begin PHP Linter ...${msg_color_none} \n"
+
+parse_error_count=0
+for path in $(git diff --cached --name-only --diff-filter=d | grep -E '(.php)$')
+do
+	php -l "$path" 1> /dev/null
+	if [ $? -ne 0 ]; then
+		# echo "PHP Parse errors were detected" >&2
+		parse_error_count=$[$parse_error_count +1]
+	fi
+done;
+
+if [ $parse_error_count -gt 0 ]; then
+	echo -en "${msg_color_magenta}$parse_error_count${msg_color_none} ${msg_color_yellow}PHP Parse error(s) were found!${msg_color_none} \n"
+	exit 1
+fi
+
+exit 0

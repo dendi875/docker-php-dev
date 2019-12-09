@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# https://www.zsythink.net/archives/2311
+CURDIR=${PWD##*/}
+CONTAINER_NAME=${CURDIR//-/}
+
+## green to echo
+function green() {
+    echo -e "\033[32m$1\033[0m"
+}
+
+## Error
+function red() {
+    echo -e "\033[31m$1\033[0m"
+}
+
+## Error - highlight red
+function hred() {
+    echo -e "\033[31m\033[01m$1\033[0m"
+}
+
+## Warning
+function yellow() {
+    echo -e "\033[33m$1\033[0m"
+}
+
+## Warning - - highlight yellow
+function hellow() {
+    echo -e "\033[33m\033[01m$1\033[0m"
+}
+
+case "$1" in
+    phpunit)
+        docker exec -i -t $CONTAINER_NAME"_php_1" phpunit -c "${@:2}"
+        ;;
+    phplog)
+        docker logs -f $CONTAINER_NAME"_php_1"
+        ;;
+    *)
+        hred "你可以运行下列子命令:\n"
+        echo "phpunit - 运行phpunit测试, e.g. ./dev phpunit path/to/tests --filter NameOfTest"
+        echo "phplog - PHP 服务日志，e.g. ./dev phplog"
+        ;;
+esac
