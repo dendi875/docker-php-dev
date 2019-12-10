@@ -21,7 +21,7 @@
 
 ## 配置Docker环境
 
-一、不同系统安装方式有所不同
+### 不同系统安装方式有所不同
 
 * win7
     * 检查虚拟化技术支持
@@ -66,7 +66,7 @@
     * 下载并安装`docker-for-mac`
         * [官方安装说明](https://docs.docker.com/docker-for-mac/)
 
-二、下载`docker-php-dev`
+### 下载`docker-php-dev`
 
 ```sh
 git clone git@github.com:dendi875/docker-php-dev.git
@@ -112,7 +112,7 @@ $ ./mk-crt.sh
 
 更多的关于证书相关知识可以参考我的另一篇文章：[使用openssl自建CA和颁发多域名通配符证书](https://github.com/dendi875/Linux/blob/master/%E4%BD%BF%E7%94%A8openssl%E8%87%AA%E5%BB%BACA%E5%92%8C%E9%A2%81%E5%8F%91%E5%A4%9A%E5%9F%9F%E5%90%8D%E9%80%9A%E9%85%8D%E7%AC%A6%E8%AF%81%E4%B9%A6.md)
 
-三、使用 *init.sh* 脚本初始化开发环境
+#### 使用 *init.sh* 脚本初始化开发环境
 
 可指定任意目录，如不指定则使用当前目录。
 
@@ -150,6 +150,12 @@ Creating dockerphpdev_nginx_1
 
 五、站点配置
 
+定制域名的nginx配置：在 docker-compose.override.yml 的 php 配置项里找到 volumes 配置项， 并加入类似下面的配置行 `- ./local/app_domain_root.conf:/etc/nginx/include/app_domain_root.conf`
+
+**注意：** 此处是文件的映射，将custom目录下的一个文件映射到了docker环境里nginx站点配置目录下。
+
+具体系统配置如下：
+
 1）win7
 
 * 查看Docker Machine IP，本例中获取的IP为192.168.99.100
@@ -166,7 +172,7 @@ Creating dockerphpdev_nginx_1
     www.test.dev            192.168.99.100
     ```
 
-* 如果需要配置`service域名`则调整*docker-compose.override.yml*文件中的`extra_hosts`内容，后重启`docker`
+* 如果需要配置`service`域名则调整*docker-compose.override.yml*文件中的`extra_hosts`内容，后重启`docker`
 
     ```sh
     extra_hosts:
@@ -174,6 +180,21 @@ Creating dockerphpdev_nginx_1
     ```
 2） win10
 
+* 通过`ipconfig`查看本地`ip`，本例中获取的IP为172.16.100.218
+
+* 修改本地hosts，加入需要使用的域名，就可以访问docker的开发环境了
+
+    ```sh
+    example.zhangquan.dev   127.0.0.1
+    www.test.dev            127.0.0.1
+    ```
+
+* 如果需要配置`service`域名则调整*docker-compose.override.yml*文件中的`extra_hosts`内容，后重启`docker`
+
+    ```sh
+    extra_hosts:
+        - "example.services.dev.ofc:172.16.100.218"
+    ```
 3）mac
 
 * 通过`ifconfig`查看本地`ip`，本例中获取的IP为172.16.100.219
@@ -185,7 +206,7 @@ Creating dockerphpdev_nginx_1
     www.test.dev            127.0.0.1
     ```
 
-* 如果需要配置`service域名`则调整*docker-compose.override.yml*文件中的`extra_hosts`内容，后重启`docker`
+* 如果需要配置`service`域名则调整*docker-compose.override.yml*文件中的`extra_hosts`内容，后重启`docker`
 
     ```sh
     extra_hosts:
@@ -200,9 +221,9 @@ Creating dockerphpdev_nginx_1
 $ docker-compose down
 Stopping dockerphpdev_nginx_1 ...
 Stopping dockerphpdev_php_1 ...
-[1BRemoving dockerphpdev_nginx_1 ...
+[1BRemoving dockerphpdev_nginx_1 ...
 Removing dockerphpdev_php_1 ...
-[1BRemoving network dockerphpdev_default
+[1BRemoving network dockerphpdev_default
 ```
 
 ```sh
@@ -236,7 +257,7 @@ $ docker-compose pull
 
 ```sh
 $ docker-compose up -d
-[31mERROR[0m: SSL error: [SSL: TLSV1_ALERT_PROTOCOL_VERSION] tlsv1 alert proto
+[31mERROR[0m: SSL error: [SSL: TLSV1_ALERT_PROTOCOL_VERSION] tlsv1 alert proto
 col version (_ssl.c:590)
 ```
 
