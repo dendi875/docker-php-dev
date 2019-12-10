@@ -1,5 +1,6 @@
 
 #  PHP本地开发环境搭建指南
+------------------------------
 
 ## 前言
 
@@ -74,7 +75,7 @@ git clone git@github.com:dendi875/docker-php-dev.git
 
 **注意：** 实际在企业中使用的时候为了安全和隐私方面的考虑，可以使用**gitlab**搭建自己的`git`私有仓库，然后把 `docker-php-dev`存储到私有仓库中
 
-三、安装自己制作的`CA`证书（非必需）
+### 安装自己制作的`CA`证书（非必需）
 
 双击安装 *build/nginx/pki/CA/cacert.crt* ，存储到 **受信任的根证书颁发机构**。
     本操作只对IE、Chrome系列的浏览器有效，Firefox需单独安装。
@@ -112,7 +113,7 @@ $ ./mk-crt.sh
 
 更多的关于证书相关知识可以参考我的另一篇文章：[使用openssl自建CA和颁发多域名通配符证书](https://github.com/dendi875/Linux/blob/master/%E4%BD%BF%E7%94%A8openssl%E8%87%AA%E5%BB%BACA%E5%92%8C%E9%A2%81%E5%8F%91%E5%A4%9A%E5%9F%9F%E5%90%8D%E9%80%9A%E9%85%8D%E7%AC%A6%E8%AF%81%E4%B9%A6.md)
 
-#### 使用 *init.sh* 脚本初始化开发环境
+### 使用 *init.sh* 脚本初始化开发环境
 
 可指定任意目录，如不指定则使用当前目录。
 
@@ -138,7 +139,7 @@ $ ./init.sh
 **注意：** 执行 `docker-compose pull`时拉取的`dendi875/php-nginx:latest`和`dendi875/php-php:7.3`镜像是存放在**dockerhub**公共仓库中，但在企业实际的使用过程中一般是把镜像存放到**阿里云**上，或者基于**Harbor**搭建一个自己内部的私有镜像仓库。
 
 
-四、启动开发环境
+### 启动开发环境
 
 ```sh
 $ cd /path/to/workdir/
@@ -148,7 +149,7 @@ Creating dockerphpdev_php_1
 Creating dockerphpdev_nginx_1
 ```
 
-五、站点配置
+### 站点配置
 
 定制域名的nginx配置：在 docker-compose.override.yml 的 php 配置项里找到 volumes 配置项， 并加入类似下面的配置行 `- ./local/app_domain_root.conf:/etc/nginx/include/app_domain_root.conf`
 
@@ -215,7 +216,7 @@ Creating dockerphpdev_nginx_1
 
 **注意：** 如果修改了`docker-compose`配置文件的内容必须重新启动`docker`才能生效
 
-六、重新启动`docker`
+### 重新启动`docker`
 
 ```sh
 $ docker-compose down
@@ -233,14 +234,14 @@ Creating dockerphpdev_php_1
 Creating dockerphpdev_nginx_1
 ```
 
-七、更新`docker`镜像
+### 更新`docker`镜像
 
 ```sh
 $ cd /path/to/workdir/
 $ docker-compose pull
 ```
 
-## dev 命令 ##
+## dev 命令
 
 为了便于开发环境的使用, 增加了 dev 这个命令行脚本.
 
