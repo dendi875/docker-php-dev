@@ -2,3 +2,4 @@
 *.sublime-project
 *.sublime-workspace
 .idea
+/Users/zhangquan/docker-php-dev/wwww/
